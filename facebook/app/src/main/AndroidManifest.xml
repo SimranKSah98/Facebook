@@ -16,6 +16,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.NotificationActivity"/>
+        <activity android:name=".activity.LoginActivity"/>
+        <activity android:name=".activity.ProfileActivity"/>
+        <activity android:name=".activity.SignupActivity"/>
+        <activity android:name=".activity.FriendRequestActivity"/>
+
+
+
+
+
     </application>
 
 </manifest>
