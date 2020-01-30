@@ -10,50 +10,23 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
-import com.example.facebook.APIinterface;
 import com.example.facebook.App;
 import com.example.facebook.R;
 import com.example.facebook.adaptor.FriendListAdaptor;
-import com.example.facebook.pojo.BaseResponse;
-import com.example.facebook.pojo.Friend;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
-public class FriendListActivity extends AppCompatActivity implements FriendListAdaptor.OnCardListener {
+public class PostActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    List<Friend> friendList = new ArrayList();
-    FriendListAdaptor friendListAdaptor;
-    RecyclerView recyclerView;
-    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_list);
-        //initView();
-        initRetrofit();
-        initRecyclerView();
+        setContentView(R.layout.activity_post);
         initBottomNavigation();
-    }
 
-    private void initRecyclerView() {
-        recyclerView = findViewById(R.id.friend_recycler_view);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(FriendListActivity.this, 1);
-        recyclerView.setLayoutManager(layoutManager);
-        friendListAdaptor = new FriendListAdaptor(friendList, this);
-        recyclerView.setAdapter(friendListAdaptor);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
     }
 
     private void initView() {
@@ -100,27 +73,7 @@ public class FriendListActivity extends AppCompatActivity implements FriendListA
         });
     }
 
-    private void initRetrofit() {
-        App.getApp().getFrienfListRetrofit().create(APIinterface.class).getFriendList(getIntent().getStringExtra("userId")).enqueue(
-                new Callback<BaseResponse<List<Friend>>>() {
-                    @Override
-                    public void onResponse(Call<BaseResponse<List<Friend>>> call, Response<BaseResponse<List<Friend>>> response) {
-                        friendList.clear();
-                        friendList.addAll(response.body().getData());
-                        friendListAdaptor.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onFailure(Call<BaseResponse<List<Friend>>> call, Throwable t) {
-                        Toast.makeText(FriendListActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
-
-                    }
-                }
-        );
-    }
-
-    @Override
-    public void onCardClick(String id) {
-
+    private void initRetrofit()
+    {
     }
 }

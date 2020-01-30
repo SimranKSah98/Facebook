@@ -1,11 +1,14 @@
 package com.example.facebook.pojo;
 
-import java.sql.Time;
+import java.io.Serializable;
 
-public class Profile {
+
+public class Profile implements Serializable {
+
 
     private String userId;
-    private String userName;
+    private String userFirstName;
+    private String userLastName;
     private String profilePicure;
     private String typeOfProfile;
     private String domainOfProfile;
@@ -13,7 +16,23 @@ public class Profile {
     private String userEmailId;
     private String userCity;
     private String userGender;
-    private Time userDateOfBirth;
+    private String userDateOfBirth;
+
+    public String getUserFirstName() {
+        return userFirstName;
+    }
+
+    public void setUserFirstName(String userFirstName) {
+        this.userFirstName = userFirstName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
 
     public String getUserId() {
         return userId;
@@ -21,14 +40,6 @@ public class Profile {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public String getProfilePicure() {
@@ -87,11 +98,12 @@ public class Profile {
         this.userGender = userGender;
     }
 
-    public Time getUserDateOfBirth() {
+    public String getUserDateOfBirth() {
         return userDateOfBirth;
     }
 
-    public void setUserDateOfBirth(Time userDateOfBirth) {
+    public void setUserDateOfBirth(String userDateOfBirth) {
         this.userDateOfBirth = userDateOfBirth;
     }
 }
+

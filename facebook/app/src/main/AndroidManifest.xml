@@ -2,15 +2,23 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.facebook">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/networkconfig"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".activity.FriendListActivity"></activity>
-        <activity android:name=".activity.MainActivity"></activity>
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".activity.PostActivity"></activity>
+        <activity android:name=".activity.ImageuploadActivity"></activity>
+        <activity android:name=".activity.EdituserActivity" />
+        <activity android:name=".activity.FriendListActivity" />
+        <activity android:name=".activity.MainActivity" />
         <activity android:name=".activity.NotificationActivity" />
         <activity android:name=".activity.LoginActivity" />
         <activity android:name=".activity.ProfileActivity">
@@ -22,6 +30,11 @@
         </activity>
         <activity android:name=".activity.SignupActivity" />
         <activity android:name=".activity.FriendRequestActivity" />
+
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
     </application>
 
 </manifest>

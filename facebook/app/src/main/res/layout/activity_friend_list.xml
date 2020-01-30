@@ -7,20 +7,20 @@
     android:orientation="vertical"
     tools:context=".activity.FriendListActivity">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?attr/buttonStyleSmall"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_centerInParent="true"
-        android:background="#FFFFFF"
-        android:indeterminateTint="@color/colorAccent"
-        android:indeterminateTintMode="src_atop"
-        android:padding="4dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+<!--    <ProgressBar-->
+<!--        android:id="@+id/progress_bar"-->
+<!--        style="?attr/buttonStyleSmall"-->
+<!--        android:layout_width="70dp"-->
+<!--        android:layout_height="70dp"-->
+<!--        android:layout_centerInParent="true"-->
+<!--        android:background="#FFFFFF"-->
+<!--        android:indeterminateTint="@color/colorAccent"-->
+<!--        android:indeterminateTintMode="src_atop"-->
+<!--        android:padding="4dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent" />-->
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/cart_recycler_view"
+        android:id="@+id/friend_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_margin="16dp"
