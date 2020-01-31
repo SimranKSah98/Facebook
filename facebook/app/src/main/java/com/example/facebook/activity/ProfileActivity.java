@@ -4,9 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
@@ -22,8 +25,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.facebook.APIinterface;
 import com.example.facebook.App;
 import com.example.facebook.R;
+import com.example.facebook.adaptor.ListViewAdaptor;
 import com.example.facebook.adaptor.ProfilePostAdaptor;
 import com.example.facebook.pojo.BaseResponse;
+import com.example.facebook.pojo.FriendRequest;
 import com.example.facebook.pojo.Post;
 import com.example.facebook.pojo.Profile;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -36,7 +41,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class ProfileActivity extends AppCompatActivity {
+public class ProfileActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private Toolbar toolbar;
     Profile profile;
@@ -49,6 +54,10 @@ public class ProfileActivity extends AppCompatActivity {
     Retrofit retrofit;
     ImageView postpic;
     VideoView postVideo;
+    ListView listView;
+    ListViewAdaptor adapter;
+    List<Profile> profiles=new ArrayList<Profile>();
+    SearchView searchView;
 
 
     @Override
@@ -62,6 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
         initRetrofit();
         initFeedretrofit();
         initFriendList();
+        initfollowrequest();
     }
 
     private void initFriendList() {
@@ -82,13 +92,10 @@ public class ProfileActivity extends AppCompatActivity {
         userdesp = findViewById(R.id.userdescription);
         usergender = findViewById(R.id.usergender);
         frndList = findViewById(R.id.friendlist);
+        searchView = (SearchView) findViewById(R.id.search);
+        searchView.setOnQueryTextListener(ProfileActivity.this);
         follow = findViewById(R.id.follow);
-        follow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
-            }
-        });
         edit = findViewById(R.id.edituser);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +113,29 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
         poststatus = findViewById(R.id.poststatus);
+    }
+
+    private void initfollowrequest()
+    {
+        follow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                App.getApp().getRetrofit().create(APIinterface.class).sendRequest().enqueue(
+                        new Callback<BaseResponse<FriendRequest>>() {
+                            @Override
+                            public void onResponse(Call<BaseResponse<FriendRequest>> call, Response<BaseResponse<FriendRequest>> response) {
+
+                            }
+
+                            @Override
+                            public void onFailure(Call<BaseResponse<FriendRequest>> call, Throwable t) {
+
+                            }
+                        }
+                );
+
+            }
+        });
     }
 
     private void initBottomNavigation() {
@@ -145,6 +175,8 @@ public class ProfileActivity extends AppCompatActivity {
         feedrecycleview.setLayoutManager(layoutManager);
         feedrecycleview.setItemAnimator(new DefaultItemAnimator());
         feedrecycleview.setAdapter(profilePostAdaptor);
+        listView = (ListView) findViewById(R.id.searchlistview);
+        listView.bringToFront();
     }
 
     private void initToolbar() {
@@ -207,5 +239,55 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        App.getApp().search().create(APIinterface.class).searchbyName(query).enqueue(
+                new Callback<List<Profile>>() {
+                    @Override
+                    public void onResponse(Call<List<Profile>> call, Response<List<Profile>> response) {
+                        if (!response.body().isEmpty()) {
+                            profiles.clear();
+                            profiles.addAll(response.body());
+                            adapter = new ListViewAdaptor(ProfileActivity.this, profiles);
+                            listView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
+                                    int i=listView.getSelectedItemPosition();
+                                    intent.putExtra("ToUserId",profiles.get(i).getUserId());
+                                    startActivity(intent);
+
+                                }
+                            });
+                        } else {
+                            profiles.clear();
+                            Profile profile = new Profile();
+                            profile.setUserFirstName("No Search result");
+                            profiles.add(profile);
+                            adapter = new ListViewAdaptor(ProfileActivity.this, profiles);
+                            listView.setAdapter(adapter);
+                            listView.setOnItemClickListener(null);
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Profile>> call, Throwable t) {
+                        Toast.makeText(ProfileActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+
+
+                    }
+                }
+        );
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        return false;
+    }
 }
 

@@ -37,10 +37,16 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
     List<FriendRequest> friendRequestList=new ArrayList();
     List<Friend> friendList=new ArrayList();
     Toolbar toolbar;
+    FriendRequest friendRequest=new FriendRequest();
+    String fromuser,touser;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friendrequest);
+        initView();
+        initRecyclerView();
+        initBottomNavigation();
     }
 
     private void initRecyclerView() {
@@ -54,8 +60,9 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
 
     private void initView() {
 
+        touser=getIntent().getStringExtra("ToUserId");
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Login");
+        toolbar.setTitle("Request");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -98,15 +105,18 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
 
     private void initRetrofit()
     {
-        App.getApp().getRetrofit().create(APIinterface.class).acceptRequest(getIntent().getStringExtra("userId"),"abc").enqueue(
-                new Callback<BaseResponse<List<FriendRequest>>>() {
+        App.getApp().getRetrofit().create(APIinterface.class).sendrequest(friendRequest).enqueue(
+                new Callback<BaseResponse<FriendRequest>>() {
                     @Override
-                    public void onResponse(Call<BaseResponse<List<FriendRequest>>> call, Response<BaseResponse<List<FriendRequest>>> response) {
+                    public void onResponse(Call<BaseResponse<FriendRequest>> call, Response<BaseResponse<FriendRequest>> response) {
+                        friendRequest=response.body().getData();
+
+
 
                     }
 
                     @Override
-                    public void onFailure(Call<BaseResponse<List<FriendRequest>>> call, Throwable t) {
+                    public void onFailure(Call<BaseResponse<FriendRequest>> call, Throwable t) {
 
                     }
                 }
@@ -115,6 +125,7 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
 
     @Override
     public void onCardClick(String id) {
+
 
     }
 }
