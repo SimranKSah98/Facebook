@@ -38,7 +38,6 @@ public class FriendRequestAdaptor extends RecyclerView.Adapter<FriendRequestAdap
     @Override
     public void onBindViewHolder(@NonNull FriendRequestAdaptor.ViewHolder holder, int position) {
         holder.friendname.setText(friendRequestList.get(holder.getAdapterPosition()).getUserFirstName());
-        holder.friendSurname.setText(friendRequestList.get(holder.getAdapterPosition()).getUserLastName());
         Glide.with(holder.imageView.getContext()).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).load(friendRequestList.get(holder.getAdapterPosition()).getUserImage()).into(holder.imageView);
 
     }

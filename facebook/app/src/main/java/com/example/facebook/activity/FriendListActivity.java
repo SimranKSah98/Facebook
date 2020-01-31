@@ -36,6 +36,7 @@ public class FriendListActivity extends AppCompatActivity implements FriendListA
     FriendListAdaptor friendListAdaptor;
     RecyclerView recyclerView;
     ProgressBar progressBar;
+    String authToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

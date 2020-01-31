@@ -5,7 +5,6 @@ import java.io.Serializable;
 public class Friend implements Serializable {
     private String userId;
     private String userFirstName;
-    private String userLastName;
     private String userImage;
 
     public String getUserId() {
@@ -24,13 +23,6 @@ public class Friend implements Serializable {
         this.userFirstName = userFirstName;
     }
 
-    public String getUserLastName() {
-        return userLastName;
-    }
-
-    public void setUserLastName(String userLastName) {
-        this.userLastName = userLastName;
-    }
 
     public String getUserImage() {
         return userImage;

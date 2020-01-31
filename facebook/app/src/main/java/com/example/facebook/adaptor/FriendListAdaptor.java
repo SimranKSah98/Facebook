@@ -38,7 +38,6 @@ public class FriendListAdaptor extends RecyclerView.Adapter<FriendListAdaptor.Vi
     @Override
     public void onBindViewHolder(@NonNull final FriendListAdaptor.ViewHolder holder, int position) {
         holder.friendname.setText(friendList.get(holder.getAdapterPosition()).getUserFirstName());
-        holder.friendSurname.setText(friendList.get(holder.getAdapterPosition()).getUserLastName());
         Glide.with(holder.imageView.getContext()).applyDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.ic_launcher_foreground)).load(friendList.get(holder.getAdapterPosition()).getUserImage()).into(holder.imageView);
 
 

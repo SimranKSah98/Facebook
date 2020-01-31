@@ -8,7 +8,6 @@ public class Profile implements Serializable {
 
     private String userId;
     private String userFirstName;
-    private String userLastName;
     private String profilePicure;
     private String typeOfProfile;
     private String domainOfProfile;
@@ -24,14 +23,6 @@ public class Profile implements Serializable {
 
     public void setUserFirstName(String userFirstName) {
         this.userFirstName = userFirstName;
-    }
-
-    public String getUserLastName() {
-        return userLastName;
-    }
-
-    public void setUserLastName(String userLastName) {
-        this.userLastName = userLastName;
     }
 
     public String getUserId() {

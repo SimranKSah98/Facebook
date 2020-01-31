@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
@@ -12,19 +13,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.facebook.APIinterface;
+import com.example.facebook.App;
 import com.example.facebook.R;
 import com.example.facebook.activity.ProfileActivity;
+import com.example.facebook.activity.SignupActivity;
+import com.example.facebook.pojo.Action;
+import com.example.facebook.pojo.BaseResponse;
 import com.example.facebook.pojo.Post;
-import com.example.facebook.pojo.Profile;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProfilePostAdaptor extends RecyclerView.Adapter<ProfilePostAdaptor.ViewHolder> {
 
     List<Post> posts;
+    Action action = new Action();
 
-    public ProfilePostAdaptor(List<Post> posts)
-    {
+    public ProfilePostAdaptor(List<Post> posts) {
         this.posts = posts;
     }
 
@@ -54,19 +63,43 @@ public class ProfilePostAdaptor extends RecyclerView.Adapter<ProfilePostAdaptor.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public TextView username,time,status,likecount,dislikecount,commentcount,emojocount;
-        public ImageView profile, statusimage;
+        public TextView username, time, status, likecount, dislikecount, commentcount, emojocount;
+        public ImageView profile, statusimage, like, dislike;
         public VideoView statusvideo;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            username=itemView.findViewById(R.id.username);
-            time=itemView.findViewById(R.id.time);
-            status=itemView.findViewById(R.id.status);
-            statusimage=itemView.findViewById(R.id.imagepost);
-            likecount=itemView.findViewById(R.id.liketext);
-            dislikecount=itemView.findViewById(R.id.disliketext);
-            commentcount=itemView.findViewById(R.id.commenttext);
-            emojocount=itemView.findViewById(R.id.emojitext);
+            username = itemView.findViewById(R.id.username);
+            time = itemView.findViewById(R.id.time);
+            status = itemView.findViewById(R.id.status);
+            statusimage = itemView.findViewById(R.id.imagepost);
+            likecount = itemView.findViewById(R.id.liketext);
+            dislikecount = itemView.findViewById(R.id.disliketext);
+            commentcount = itemView.findViewById(R.id.commenttext);
+            emojocount = itemView.findViewById(R.id.emojitext);
+            like = itemView.findViewById(R.id.like);
+            dislike = itemView.findViewById(R.id.dislike);
+
+
+            like.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    App.getApp().getActionRetrofit().create(APIinterface.class).addAction(action, "").enqueue(
+                            new Callback<BaseResponse<Void>>() {
+                                @Override
+                                public void onResponse(Call<BaseResponse<Void>> call, Response<BaseResponse<Void>> response) {
+
+                                }
+
+                                @Override
+                                public void onFailure(Call<BaseResponse<Void>> call, Throwable t) {
+
+                                }
+                            }
+                    );
+                }
+            });
         }
     }
 }

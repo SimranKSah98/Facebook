@@ -1,34 +1,58 @@
 package com.example.facebook.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toolbar;
+import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.facebook.APIinterface;
+import com.example.facebook.App;
 import com.example.facebook.R;
+import com.example.facebook.pojo.Action;
+import com.example.facebook.pojo.BaseResponseLogin;
+import com.example.facebook.pojo.Login;
+import com.example.facebook.pojo.Profile;
 import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.w3c.dom.Text;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
     private TextView inputEmail,inputPassword,btnLogin,btnSignup;
     private Toolbar toolbar;
+    Login login;
+    String token;
+    SharedPreferences sharedPreferences ;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         initView();
         initBottomNavigation();
+        initFirebasetoken();
+        initToolbar();
+        initRetrofit();
     }
 
     private void initView()
@@ -37,6 +61,12 @@ public class LoginActivity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.password);
         btnSignup = (Button) findViewById(R.id.btn_signup);
         btnLogin = (Button) findViewById(R.id.btn_login);
+
+
+    }
+
+    private void initToolbar()
+    {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Login");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -47,6 +77,28 @@ public class LoginActivity extends AppCompatActivity {
                 onBackPressed();
             }
         });
+    }
+
+
+    private void initFirebasetoken()
+    {
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("Token", "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        token = task.getResult().getToken();
+
+                        // Log and toast
+                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d("Token", msg);
+                        Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     private void initBottomNavigation()
@@ -73,9 +125,46 @@ public class LoginActivity extends AppCompatActivity {
                         return true;
 
                     case R.id.profile:
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        overridePendingTransition(0, 0);
                         return true;
+
                 }
                 return false;
+            }
+        });
+    }
+
+    private void initRetrofit()
+    {
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                login=new Login();
+                login.setEmailAddress(inputEmail.getText().toString());
+                login.setPassword(inputPassword.getText().toString());
+                login.setFcmToken(token);
+                App.getApp().getregisterretrofit().create(APIinterface.class).getLogin(login).enqueue(
+                        new Callback<BaseResponseLogin<String>>() {
+                            @Override
+                            public void onResponse(Call<BaseResponseLogin<String>> call, Response<BaseResponseLogin<String>> response) {
+                                Toast.makeText(LoginActivity.this, response.message(), Toast.LENGTH_SHORT).show();
+                                sharedPreferences=getSharedPreferences("com.example.facebook.activity",MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                String token = response.body().getData();
+                                editor.putString("accessToken",response.body().getData());
+                                editor.commit();
+                                Intent intent=new Intent(LoginActivity.this,PostSignupActivity.class);
+                                intent.putExtra("accessToken",response.body().getData());
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(Call<BaseResponseLogin<String>> call, Throwable t) {
+                                Toast.makeText(LoginActivity.this, "Fail", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                );
             }
         });
     }
