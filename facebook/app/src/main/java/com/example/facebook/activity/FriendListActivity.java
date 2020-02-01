@@ -2,6 +2,7 @@ package com.example.facebook.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,7 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.Toolbar;
+
 
 import com.example.facebook.APIinterface;
 import com.example.facebook.App;
@@ -42,7 +43,7 @@ public class FriendListActivity extends AppCompatActivity implements FriendListA
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
-        //initView();
+        initView();
         initRetrofit();
         initRecyclerView();
         initBottomNavigation();
@@ -60,7 +61,7 @@ public class FriendListActivity extends AppCompatActivity implements FriendListA
     private void initView() {
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Login");
+        toolbar.setTitle("Friend List");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_black_24dp);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

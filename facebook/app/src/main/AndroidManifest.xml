@@ -14,15 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".activity.PostSignupActivity">
-        </activity>
+        <activity android:name=".activity.AdsActivity"></activity>
+        <activity android:name=".activity.PostSignupActivity"></activity>
         <activity android:name=".activity.PostActivity" />
         <activity android:name=".activity.ImageuploadActivity" />
         <activity android:name=".activity.EdituserActivity" />
         <activity android:name=".activity.FriendListActivity" />
-        <activity android:name=".activity.MainActivity"/>
+        <activity android:name=".activity.MainActivity">
+
+
+
+
+        </activity>
         <activity android:name=".activity.NotificationActivity" />
         <activity android:name=".activity.LoginActivity">
+        </activity>
+        <activity android:name=".activity.SignupActivity">
+
+        </activity>
+        <activity android:name=".activity.ProfileActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,11 +40,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-
         </activity>
-        <activity android:name=".activity.SignupActivity">
-        </activity>
-        <activity android:name=".activity.ProfileActivity" />
         <activity android:name=".activity.FriendRequestActivity" />
 
         <meta-data

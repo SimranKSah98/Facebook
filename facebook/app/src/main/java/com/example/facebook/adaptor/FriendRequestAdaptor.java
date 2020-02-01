@@ -15,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.facebook.R;
 import com.example.facebook.pojo.Friend;
-import com.example.facebook.pojo.FriendRequest;
 
 import java.util.List;
 

@@ -1,8 +1,6 @@
 package com.example.facebook.pojo;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
-import java.util.List;
 
 public class Post implements Serializable {
     private Boolean isBusinessProfilePost;

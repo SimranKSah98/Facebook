@@ -1,6 +1,5 @@
 package com.example.facebook.pojo;
 import java.io.Serializable;
-import java.util.List;
 
 public class Action implements Serializable {
     private String channel;

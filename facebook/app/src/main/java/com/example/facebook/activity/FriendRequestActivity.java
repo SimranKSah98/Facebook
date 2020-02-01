@@ -1,14 +1,16 @@
 package com.example.facebook.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toolbar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -47,6 +49,7 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
         initView();
         initRecyclerView();
         initBottomNavigation();
+        initRetrofit();
     }
 
     private void initRecyclerView() {
@@ -61,6 +64,8 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
     private void initView() {
 
         touser=getIntent().getStringExtra("ToUserId");
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.facebook.activity",MODE_PRIVATE);
+        fromuser = sharedPreferences.getString("accessToken","");
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Request");
         toolbar.setTitleTextColor(getResources().getColor(R.color.white));
@@ -105,18 +110,19 @@ public class FriendRequestActivity extends AppCompatActivity implements FriendRe
 
     private void initRetrofit()
     {
-        App.getApp().getRetrofit().create(APIinterface.class).sendrequest(friendRequest).enqueue(
+        friendRequest.setFromRequestId(fromuser);
+        friendRequest.setToRequestId(touser);
+        App.getApp().getRetrofit().create(APIinterface.class).sendRequest(friendRequest).enqueue(
                 new Callback<BaseResponse<FriendRequest>>() {
                     @Override
                     public void onResponse(Call<BaseResponse<FriendRequest>> call, Response<BaseResponse<FriendRequest>> response) {
-                        friendRequest=response.body().getData();
-
-
+                        Toast.makeText(FriendRequestActivity.this,"Sent Request",Toast.LENGTH_SHORT).show();
 
                     }
 
                     @Override
                     public void onFailure(Call<BaseResponse<FriendRequest>> call, Throwable t) {
+                        Toast.makeText(FriendRequestActivity.this,"Sent Request",Toast.LENGTH_SHORT).show();
 
                     }
                 }

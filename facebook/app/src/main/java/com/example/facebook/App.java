@@ -33,13 +33,26 @@ public class App extends Application {
         return retrofit;
     }
 
+    public Retrofit getNotifications() {
+        Gson gson = new GsonBuilder()
+                .setLenient()
+                .create();
+        OkHttpClient client = new OkHttpClient.Builder().build();
+        retrofit = new Retrofit.Builder()
+                .baseUrl("http://172.16.20.150:8089/")
+                .addConverterFactory(GsonConverterFactory.create(gson))
+                .client(client).build();
+
+        return retrofit;
+    }
+
     public Retrofit getfriendrequest() {
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
         OkHttpClient client = new OkHttpClient.Builder().build();
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.177.69.57:7007/")
+                .baseUrl("http://172.16.20.133:8111/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client).build();
 
@@ -52,7 +65,7 @@ public class App extends Application {
                 .create();
         OkHttpClient client = new OkHttpClient.Builder().build();
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://10.177.68.116:8080/")
+                .baseUrl("http://172.16.20.133:8111/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client).build();
 
@@ -66,7 +79,7 @@ public class App extends Application {
                 .create();
         OkHttpClient client = new OkHttpClient.Builder().build();
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://172.16.20.160:8102/")
+                .baseUrl("http://172.16.20.160:8100/")
                 .addConverterFactory(GsonConverterFactory.create(gson))
                 .client(client).build();
 

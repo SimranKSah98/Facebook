@@ -1,7 +1,5 @@
 package com.example.facebook.pojo;
 
-import com.google.auto.value.AutoValue;
-
 import java.io.Serializable;
 
 
