@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    tools:context="com.example.facebook.activity.MainActivity">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -43,7 +43,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:id="@+id/banner">
+        android:id="@+id/banner"
+        android:layout_marginTop="70dp"
+        >
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/pager"
             android:layout_width="match_parent"
@@ -52,6 +54,7 @@
             android:layout_marginRight="8dp"
             android:layout_marginLeft="8dp"
             />
+
         <com.viewpagerindicator.CirclePageIndicator
             android:id="@+id/indicator"
             android:layout_width="fill_parent"
@@ -62,8 +65,7 @@
             app:centered="true"
             app:fillColor="#df0623"
             app:pageColor="#fff"
-            app:snap="false"
-            android:layout_marginTop="280dp"/>
+            app:snap="false" />
     </RelativeLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

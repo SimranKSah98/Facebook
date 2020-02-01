@@ -82,10 +82,10 @@
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_gravity="center_horizontal|bottom"
-                    android:background="@drawable/custom_imageborder"
                     android:cropToPadding="true"
                     android:padding="7dp"
-                    android:scaleType="centerCrop" />
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/images"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -234,7 +234,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="3dp"
-            android:layout_marginBottom="4dp"
+            android:layout_marginBottom="40dp"
             android:scrollbars="vertical" />
 
         </LinearLayout>

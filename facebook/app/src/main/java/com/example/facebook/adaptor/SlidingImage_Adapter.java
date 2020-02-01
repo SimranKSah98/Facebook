@@ -27,17 +27,15 @@ public class SlidingImage_Adapter extends PagerAdapter {
     }
     @Override
     public int getCount() {
-        return 4;
+        return list.size();
     }
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         View imageLayout = inflater.inflate(R.layout.slidingimages_layout, view, false);
         assert imageLayout != null;
-        final ImageView imageView = (ImageView) imageLayout
-                .findViewById(R.id.image);
-        Glide.with(imageView.getContext())
-                .load(list.get(position).getImageUrl())
-                .into(imageView);
+        final ImageView imageView = (ImageView) imageLayout.findViewById(R.id.image1);
+        Glide.with(imageView.getContext()).load(list.get(position).getImageUrl()).into(imageView);
+
         view.addView(imageLayout, 0);
         return imageLayout;
     }

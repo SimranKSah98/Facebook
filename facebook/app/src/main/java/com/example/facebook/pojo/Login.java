@@ -6,6 +6,15 @@ public class Login implements Serializable {
     private String emailAddress;
     private String password;
     private String fcmToken;
+    private String channel;
+
+    public String getChannel() {
+        return channel;
+    }
+
+    public void setChannel(String channel) {
+        this.channel = channel;
+    }
 
     public String getEmailAddress() {
         return emailAddress;

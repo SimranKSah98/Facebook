@@ -1,5 +1,6 @@
 package com.example.facebook.adaptor;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,9 +12,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.facebook.R;
 import com.example.facebook.pojo.Post;
+
+import java.util.ArrayList;
 import java.util.List;
 public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewAdapter> {
-    List<Post>postList;
+    List<Post>postList=new ArrayList<Post>();
+    Context context;
+
+    public FeedAdapter(List<Post> postList, Context context) {
+        this.postList = postList;
+        this.context = context;
+    }
+
     @NonNull
     @Override
     public MyViewAdapter onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -32,6 +42,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.MyViewAdapter>
     public int getItemCount() {
         return postList.size();
     }
+
     public class MyViewAdapter extends RecyclerView.ViewHolder{
         ImageView feedImage;
         VideoView feedVideo;

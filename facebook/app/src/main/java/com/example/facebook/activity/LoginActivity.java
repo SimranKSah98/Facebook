@@ -19,18 +19,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.facebook.APIinterface;
 import com.example.facebook.App;
 import com.example.facebook.R;
-import com.example.facebook.pojo.Action;
 import com.example.facebook.pojo.BaseResponseLogin;
 import com.example.facebook.pojo.Login;
-import com.example.facebook.pojo.Profile;
-import com.google.android.gms.common.SignInButton;
+import com.example.facebook.pojo.Loginresponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
-
-import org.w3c.dom.Text;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -144,23 +140,33 @@ public class LoginActivity extends AppCompatActivity {
                 login.setEmailAddress(inputEmail.getText().toString());
                 login.setPassword(inputPassword.getText().toString());
                 login.setFcmToken(token);
+                login.setChannel("Facebook");
                 App.getApp().getregisterretrofit().create(APIinterface.class).getLogin(login).enqueue(
-                        new Callback<BaseResponseLogin<String>>() {
+                        new Callback<BaseResponseLogin<Loginresponse>>() {
                             @Override
-                            public void onResponse(Call<BaseResponseLogin<String>> call, Response<BaseResponseLogin<String>> response) {
+                            public void onResponse(Call<BaseResponseLogin<Loginresponse>> call, Response<BaseResponseLogin<Loginresponse>> response) {
                                 Toast.makeText(LoginActivity.this, response.message(), Toast.LENGTH_SHORT).show();
                                 sharedPreferences=getSharedPreferences("com.example.facebook.activity",MODE_PRIVATE);
                                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                                String token = response.body().getData();
-                                editor.putString("accessToken",response.body().getData());
+                                Loginresponse loginresponse = response.body().getData();
+                                String profile=loginresponse.getProfile();
+                                editor.putString("accessToken",loginresponse.getAccessToken());
                                 editor.commit();
-                                Intent intent=new Intent(LoginActivity.this,PostSignupActivity.class);
-                                intent.putExtra("accessToken",response.body().getData());
-                                startActivity(intent);
+                                if(profile.equals("")) {
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("accessToken", response.body().getData());
+                                    startActivity(intent);
+                                }
+                                else {
+                                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                    intent.putExtra("accessToken", response.body().getData());
+                                    startActivity(intent);
+                                    Toast.makeText(LoginActivity.this,"done",Toast.LENGTH_SHORT).show();
+                                }
                             }
 
                             @Override
-                            public void onFailure(Call<BaseResponseLogin<String>> call, Throwable t) {
+                            public void onFailure(Call<BaseResponseLogin<Loginresponse>> call, Throwable t) {
                                 Toast.makeText(LoginActivity.this, "Fail", Toast.LENGTH_SHORT).show();
                             }
                         }

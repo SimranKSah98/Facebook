@@ -1,6 +1,7 @@
 package com.example.facebook.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -56,8 +57,11 @@ public class ProfileActivity extends AppCompatActivity implements SearchView.OnQ
     VideoView postVideo;
     ListView listView;
     ListViewAdaptor adapter;
-    List<Profile> profiles=new ArrayList<Profile>();
+    List<Profile> profiles = new ArrayList<Profile>();
     SearchView searchView;
+    String touser, fromuser;
+    FriendRequest friendRequest = new FriendRequest();
+    String accessToken;
 
 
     @Override
@@ -69,6 +73,8 @@ public class ProfileActivity extends AppCompatActivity implements SearchView.OnQ
         initToolbar();
         initRecycleview();
         initRetrofit();
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.facebook.activity",MODE_PRIVATE);
+        accessToken = sharedPreferences.getString("accessToken","");
         initFeedretrofit();
         initFriendList();
         initfollowrequest();
@@ -86,6 +92,9 @@ public class ProfileActivity extends AppCompatActivity implements SearchView.OnQ
     }
 
     private void init() {
+        touser = getIntent().getStringExtra("ToUserId");
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.facebook.activity", MODE_PRIVATE);
+        fromuser = sharedPreferences.getString("accessToken", "");
         username = findViewById(R.id.username);
         useremail = findViewById(R.id.useremail);
         userdob = findViewById(R.id.userdob);
@@ -117,18 +126,22 @@ public class ProfileActivity extends AppCompatActivity implements SearchView.OnQ
 
     private void initfollowrequest()
     {
+        friendRequest.setFromRequestId(fromuser);
+        friendRequest.setToRequestId(touser);
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                App.getApp().getRetrofit().create(APIinterface.class).sendRequest().enqueue(
+                App.getApp().getfriendrequest().create(APIinterface.class).sendRequest(friendRequest).enqueue(
                         new Callback<BaseResponse<FriendRequest>>() {
                             @Override
                             public void onResponse(Call<BaseResponse<FriendRequest>> call, Response<BaseResponse<FriendRequest>> response) {
+                                Toast.makeText(ProfileActivity.this, "Sent Request", Toast.LENGTH_SHORT).show();
 
                             }
 
                             @Override
                             public void onFailure(Call<BaseResponse<FriendRequest>> call, Throwable t) {
+                                Toast.makeText(ProfileActivity.this, "Sent Request", Toast.LENGTH_SHORT).show();
 
                             }
                         }
@@ -221,7 +234,8 @@ public class ProfileActivity extends AppCompatActivity implements SearchView.OnQ
 
 
     private void initFeedretrofit() {
-        App.getApp().getRetrofit2().create(APIinterface.class).getUserPost("user2", 0, 5).enqueue(
+
+        App.getApp().getRetrofit2().create(APIinterface.class).getUserPost("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJsa2poQGdtYWlsLmNvbSIsInVzZXJJZCI6ImZmNTQyY2IzLTcxYWEtNGY4Mi1iMzc2LTMwOWJmMTlhYjA1ZSAifQ.4R0IkIYlbI_e94OQXA2Eg_ui_dIzaH6BDhu8BzCS6GFGJqEiaPt5gSpeYaF5hLT7JUahwMcd1fFdP4Qbib90LA", 0, 5).enqueue(
                 new Callback<BaseResponse<List<Post>>>() {
                     @Override
                     public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
@@ -255,8 +269,8 @@ public class ProfileActivity extends AppCompatActivity implements SearchView.OnQ
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                     Intent intent = new Intent(ProfileActivity.this, ProfileActivity.class);
-                                    int i=listView.getSelectedItemPosition();
-                                    intent.putExtra("ToUserId",profiles.get(i).getUserId());
+                                    int i = listView.getSelectedItemPosition();
+                                    intent.putExtra("ToUserId", profiles.get(i).getUserId());
                                     startActivity(intent);
 
                                 }
@@ -287,6 +301,9 @@ public class ProfileActivity extends AppCompatActivity implements SearchView.OnQ
 
     @Override
     public boolean onQueryTextChange(String newText) {
+
+        listView.clearChoices();
+        listView.setAdapter(null);
         return false;
     }
 }

@@ -16,8 +16,6 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.facebook.APIinterface;
 import com.example.facebook.App;
 import com.example.facebook.R;
-import com.example.facebook.activity.ProfileActivity;
-import com.example.facebook.activity.SignupActivity;
 import com.example.facebook.pojo.Action;
 import com.example.facebook.pojo.BaseResponse;
 import com.example.facebook.pojo.Post;
@@ -84,8 +82,11 @@ public class ProfilePostAdaptor extends RecyclerView.Adapter<ProfilePostAdaptor.
             like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    action.setChannel("Facebook");
+                    action.setTag("Coding");
+                    action.setAction("like");
 
-                    App.getApp().getActionRetrofit().create(APIinterface.class).addAction(action, "").enqueue(
+                    App.getApp().getActionRetrofit().create(APIinterface.class).addAction(action, "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGlyYWcxMkBnbWFpbC5jb20iLCJ1c2VySWQiOiI2OTlmMzc5Zi02MGM3LTRkNTktYjFjMS1kNjVjYWRjMGZkOGQgIn0.TQ2I_x9CCd2R0wg-ru4ZhoB_8PtSMffg5jBYZ33Ueo-DzWDNfUkq01M1U5lSLwBgn0_sZwG5zYUvZu2ecsGtOA").enqueue(
                             new Callback<BaseResponse<Void>>() {
                                 @Override
                                 public void onResponse(Call<BaseResponse<Void>> call, Response<BaseResponse<Void>> response) {

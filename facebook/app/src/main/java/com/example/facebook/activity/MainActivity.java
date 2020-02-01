@@ -1,23 +1,35 @@
 package com.example.facebook.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ListView;
+import android.widget.Toast;
+
 import com.example.facebook.APIinterface;
 import com.example.facebook.App;
 import com.example.facebook.R;
 import com.example.facebook.adaptor.FeedAdapter;
+import com.example.facebook.adaptor.ProfilePostAdaptor;
 import com.example.facebook.adaptor.SlidingImage_Adapter;
 import com.example.facebook.pojo.Ads;
 import com.example.facebook.pojo.BaseResponse;
 import com.example.facebook.pojo.Post;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.viewpagerindicator.CirclePageIndicator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -25,17 +37,20 @@ import java.util.TimerTask;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
+import retrofit2.http.POST;
 
 public class MainActivity extends AppCompatActivity {
     List<Ads> adsList;
-    List<Post> postList;
+    List<Post> postList=new ArrayList<Post>();
     RecyclerView recyclerView;
     FeedAdapter feedAdaptor;
     LinearLayoutManager manager;
     private static ViewPager mPager;
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
+    private int page=0;
+    private int totalPages;
+    private int totalElement;
     private CirclePageIndicator indicator;
     SlidingImage_Adapter slidingImage_adapter;
     @Override
@@ -44,21 +59,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         showAds();
         //showPost();
+        initBottomNavigation();
+        //initRecycleview();
     }
     private void showAds() {
         mPager = (ViewPager) findViewById(R.id.pager);
 
         SharedPreferences sharedPreferences = getSharedPreferences("com.example.facebook.activity",MODE_PRIVATE);
         String accessToken = sharedPreferences.getString("accessToken","");
-        App.getApp().getadsRetrofit().create(APIinterface.class).getAds(accessToken).enqueue(new Callback<List<Ads>>() {
+        App.getApp().getadsRetrofit().create(APIinterface.class).getAds("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGlyYWcxMkBnbWFpbC5jb20iLCJ1c2VySWQiOiI2OTlmMzc5Zi02MGM3LTRkNTktYjFjMS1kNjVjYWRjMGZkOGQgIn0.TQ2I_x9CCd2R0wg-ru4ZhoB_8PtSMffg5jBYZ33Ueo-DzWDNfUkq01M1U5lSLwBgn0_sZwG5zYUvZu2ecsGtOA").enqueue(new Callback<List<Ads>>() {
             @Override
             public void onResponse(Call<List<Ads>> call, Response<List<Ads>> response) {
                 if (null != response.body()) {
                     List<Ads> movies = response.body();
                     slidingImage_adapter = new SlidingImage_Adapter(MainActivity.this, movies);
                     mPager.setAdapter(slidingImage_adapter);
-                    indicator = (CirclePageIndicator)
-                            findViewById(R.id.indicator);
+                    indicator = (CirclePageIndicator) findViewById(R.id.indicator);
                     indicator.setViewPager(mPager);
                     final float density = getResources().getDisplayMetrics().density;
                     indicator.setRadius(5 * density);
@@ -88,28 +104,78 @@ public class MainActivity extends AppCompatActivity {
                 handler.post(Update);
             }
         }, 3000, 3000);
+        mPager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,AdsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-//    private void showPost()
-//    {
-//        App app=new App();
-//        postList=new ArrayList<Post>();
-//        Retrofit retrofit=app.getRetrofit();//TODO:posts api and post retrofit
-//        retrofit.create(APIinterface.class).getNewsFeed("user2",0,2).enqueue(new Callback<BaseResponse<List<Post>>>() {
-//            @Override
-//            public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
-//                if(!response.isSuccessful())
-//                {
-//                }
-//                else if(null!=response.body())
-//                {
-//                    recyclerView=findViewById(R.id.feed_recycler);
-//                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-//                    recyclerView.setAdapter(new FeedAdapter());
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<BaseResponse<List<Post>>> call, Throwable t) {
-//            }
-//        });
-//    }
+
+    private void initRecycleview() {
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 1);
+        recyclerView = findViewById(R.id.profile_recycler_view);
+        feedAdaptor = new FeedAdapter(postList,MainActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(feedAdaptor);
+    }
+
+
+    private void initBottomNavigation() {
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setSelectedItemId(R.id.profile);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.home:
+                        startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                    case R.id.request:
+                        startActivity(new Intent(getApplicationContext(), FriendRequestActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                    case R.id.notification:
+                        startActivity(new Intent(getApplicationContext(), NotificationActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+
+                    case R.id.profile:
+                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        overridePendingTransition(0, 0);
+                        return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void showPost()
+    {
+
+        postList=new ArrayList<Post>();
+        SharedPreferences sharedPreferences = getSharedPreferences("com.example.facebook.activity",MODE_PRIVATE);
+        String accessToken = sharedPreferences.getString("accessToken","");
+        App.getApp().getRetrofit2().create(APIinterface.class).getUserPost("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJjaGlyYWcxMkBnbWFpbC5jb20iLCJ1c2VySWQiOiI2OTlmMzc5Zi02MGM3LTRkNTktYjFjMS1kNjVjYWRjMGZkOGQgIn0.TQ2I_x9CCd2R0wg-ru4ZhoB_8PtSMffg5jBYZ33Ueo-DzWDNfUkq01M1U5lSLwBgn0_sZwG5zYUvZu2ecsGtOA",0,2).enqueue(
+                new Callback<BaseResponse<List<Post>>>() {
+                    @Override
+                    public void onResponse(Call<BaseResponse<List<Post>>> call, Response<BaseResponse<List<Post>>> response) {
+                        postList.clear();
+                        postList.addAll(response.body().getData());
+                        feedAdaptor.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onFailure(Call<BaseResponse<List<Post>>> call, Throwable t) {
+
+                    }
+                }
+        );
+
+    }
 }
