@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_100"
+    android:orientation="vertical"
+    tools:context="com.example.facebook.activity.LoginActivity">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?attr/buttonStyleSmall"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerInParent="true"
+        android:background="@color/white"
+        android:indeterminateTint="@color/colorAccent"
+        android:indeterminateTintMode="src_atop"
+        android:padding="4dp"
+        android:visibility="gone" />
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <ImageView
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/facebook" />
+
+        <TextView
+            android:id="@+id/nameEditUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@color/white"
+            android:text="your email"
+            android:maxLines="1"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/nameEditEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@color/white"
+            android:hint="change your profile name"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/eidtCity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@color/white"
+            android:hint="moved to a different city?change here.."
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:textSize="18dp" />
+
+        <EditText
+            android:id="@+id/eidtpersonalDescription"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:layout_margin="15dp"
+            android:background="@color/white"
+            android:hint="sabka baap facebook"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:padding="4dp"
+            android:singleLine="true"
+            android:textSize="18dp" />
+
+
+
+
+
+        <Button
+            android:id="@+id/btnupdate"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@color/colorPrimary"
+            android:text="Submit"
+            android:textColor="#FFFFFF"
+            android:textSize="20dp" />
+
+
+
+
+
+    </LinearLayout>
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@color/colorPrimary"
+        app:itemIconTint="@android:color/white"
+        app:itemTextColor="@android:color/white"
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/menu_navigation" />
+</RelativeLayout>

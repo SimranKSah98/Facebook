@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.TagsActivity">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SELECT INTEREST"
+        android:id="@+id/tagstext"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="90dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Poetry"
+        android:id="@+id/Poetrycheckbox"
+        app:layout_constraintTop_toBottomOf="@id/tagstext"
+        app:layout_constraintStart_toEndOf="@id/fictioncheckbox"
+        android:layout_margin="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Footwear"
+        android:id="@+id/Footwearcheckbox"
+        app:layout_constraintTop_toBottomOf="@id/tagstext"
+        app:layout_constraintStart_toEndOf="@id/Poetrycheckbox"
+        android:layout_margin="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clothing"
+        android:id="@+id/Clothingcheckbox"
+        app:layout_constraintTop_toBottomOf="@id/fictioncheckbox"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Android"
+        android:id="@+id/Androidcheckbox"
+        app:layout_constraintTop_toBottomOf="@id/Poetrycheckbox"
+        app:layout_constraintStart_toEndOf="@id/fictioncheckbox"
+        android:layout_margin="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Fiction"
+        android:id="@+id/fictioncheckbox"
+        app:layout_constraintTop_toBottomOf="@id/tagstext"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hollywood"
+        android:id="@+id/Hollywoodcheckbox"
+        app:layout_constraintTop_toBottomOf="@id/Footwearcheckbox"
+        app:layout_constraintStart_toEndOf="@id/Androidcheckbox"
+        android:layout_margin="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Badminton"
+        android:id="@+id/Badmintoncheckbox"
+        app:layout_constraintTop_toBottomOf="@id/Clothingcheckbox"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
+
+    <androidx.appcompat.widget.AppCompatCheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chinese"
+        android:id="@+id/Chineseheckbox"
+        app:layout_constraintTop_toBottomOf="@id/Androidcheckbox"
+        app:layout_constraintStart_toEndOf="@id/Badmintoncheckbox"
+        android:layout_margin="16dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SELECT MINIMUM OF TWO"
+        android:background="@drawable/custom_border"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Chineseheckbox"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/minimun2"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SUBMIT"
+        android:id="@+id/tagssubmit"
+        android:background="@drawable/custom_border"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/minimun2"
+        android:layout_marginTop="16dp"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
